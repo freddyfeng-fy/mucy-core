@@ -1,0 +1,116 @@
+conf:
+  listen:
+    host: 0.0.0.0 # `manager api` listening ip or host name
+    #host: 127.0.0.1 # `manager api` listening ip or host name
+    port: 9000 # `manager api` listening port
+  etcd:
+    endpoints: # supports defining multiple etcd host addresses for an etcd cluster
+      - gonivinck-etcd:2379
+  log:
+    error_log:
+      level: warn # supports levels, lower to higher: debug, info, warn, error, panic, fatal
+      file_path:
+        logs/error.log # supports relative path, absolute path, standard output
+      # such as: logs/error.log, /tmp/logs/error.log, /dev/stdout, /dev/stderr
+authentication:
+  secret:
+    secret # secret for jwt token generation.
+    # NOTE: Highly recommended to modify this value to protect `manager api`.
+  # if it's default value, when `manager api` start , it will generate a random string to replace it.
+  expire_time: 3600 # jwt token expire time, in second
+  users:
+    - username: admin # username and password for login `manager api`
+      password: admin
+    - username: user
+      password: user
+oidc:
+  enabled: false
+  expire_time: 3600
+  client_id: dashboard
+  client_secret: dashboard
+  auth_url: http://172.17.0.1:8080/auth/realms/master/protocol/openid-connect/auth
+  token_url: http://172.17.0.1:8080/auth/realms/master/protocol/openid-connect/token
+  user_info_url: http://172.17.0.1:8080/auth/realms/master/protocol/openid-connect/userinfo
+  redirect_url: http://127.0.0.1:9000/apisix/admin/oidc/callback
+  scope: openid
+plugins:
+  - api-breaker
+  - authz-casbin
+  - authz-casdoor
+  - authz-keycloak
+  - aws-lambda
+  - azure-functions
+  - basic-auth
+  # - batch-requests
+  - clickhouse-logger
+  - client-control
+  - consumer-restriction
+  - cors
+  - csrf
+  - datadog
+  # - dubbo-proxy
+  - echo
+  - error-log-logger
+  # - example-plugin
+  - ext-plugin-post-req
+  - ext-plugin-post-resp
+  - ext-plugin-pre-req
+  - fault-injection
+  - file-logger
+  - forward-auth
+  - google-cloud-logging
+  - grpc-transcode
+  - grpc-web
+  - gzip
+  - hmac-auth
+  - http-logger
+  - ip-restriction
+  - jwt-auth
+  - kafka-logger
+  - kafka-proxy
+  - key-auth
+  - ldap-auth
+  - limit-conn
+  - limit-count
+  - limit-req
+  - loggly
+  # - log-rotate
+  - mocking
+  # - node-status
+  - opa
+  - openid-connect
+  - opentelemetry
+  - openwhisk
+  - prometheus
+  - proxy-cache
+  - proxy-control
+  - proxy-mirror
+  - proxy-rewrite
+  - public-api
+  - real-ip
+  - redirect
+  - referer-restriction
+  - request-id
+  - request-validation
+  - response-rewrite
+  - rocketmq-logger
+  - server-info
+  - serverless-post-function
+  - serverless-pre-function
+  - skywalking
+  - skywalking-logger
+  - sls-logger
+  - splunk-hec-logging
+  - syslog
+  - tcp-logger
+  - traffic-split
+  - ua-restriction
+  - udp-logger
+  - uri-blocker
+  - wolf-rbac
+  - zipkin
+  - elasticsearch-logge
+  - openfunction
+  - tencent-cloud-cls
+  - ai
+  - cas-auth

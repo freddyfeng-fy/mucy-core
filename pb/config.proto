@@ -1,0 +1,26 @@
+syntax="proto3";
+option go_package = "config/";
+
+message ConfigRequest{
+  // @inject_tag: json:"nick_name" form:"nick_name" uri:"nick_name"
+  string NickName=1;
+  // @inject_tag: json:"user_name" form:"user_name" uri:"user_name"
+  string UserName=2;
+  // @inject_tag: json:"password" form:"password" uri:"password"
+  string Password=3;
+  // @inject_tag: json:"password_confirm" form:"password_confirm" uri:"password_confirm"
+  string PasswordConfirm=4;
+}
+
+message ConfigResponse{
+  // @inject_tag: json:"user_id" form:"user_id" uri:"user_id"
+  int64 UserId=1;
+  // @inject_tag: json:"nick_name" form:"nick_name" uri:"nick_name"
+  string NickName=2;
+  // @inject_tag: json:"user_name" form:"user_name" uri:"user_name"
+  string UserName=3;
+}
+
+service ConfigService{
+  rpc GetConfig(ConfigRequest) returns(ConfigResponse);
+}

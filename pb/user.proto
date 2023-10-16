@@ -1,0 +1,76 @@
+syntax="proto3";
+option go_package = "user/";
+import public "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+
+message UserCurrentRequest{
+  string Token=1;
+}
+
+message UserInfoRequest{
+  int64 UserId=1;
+}
+
+message GetIsConcernRequest{
+  int64 UserId=1;
+  int64 FormUserId=2;
+}
+
+message GetUserConcernRequest{
+  int64 UserId=1;
+}
+
+message GetUserFriendRequest{
+  int64 UserId=1;
+}
+
+
+message RoleResponse{
+  string Name=1;
+  string Key=2;
+  google.protobuf.Timestamp RoleExpiryAt=3;
+  bool IsPerpetual=4;
+}
+
+message UserCurrentResponse{
+  int64 Id=1;
+  string Nickname=2;
+  string Avatar=3;
+  float Score=4;
+  float MemberScore=5;
+  string Description=6;
+  string CreateAt=7;
+  int64 Experience=8;
+  int32 Level=9;
+  string Username=10;
+  string BackgroundImage=11;
+  string HomePage=13;
+  bool Forbidden=14;
+  int32 Status=15;
+  bool PasswordSet=16;
+  string Email=17;
+  bool EmailVerified=18;
+  repeated RoleResponse Role=20;
+}
+
+message GetIsConcernResponse{
+  bool IsConcern=1;
+}
+
+message GetConcernResponse{
+  repeated int64 Ids = 1;;
+}
+
+message GetFriendResponse{
+  repeated int64 Ids = 1;;
+}
+
+
+service UserService{
+  rpc GetUserCurrent(UserCurrentRequest) returns(UserCurrentResponse);
+  rpc GetUserInfo(UserInfoRequest) returns(UserCurrentResponse);
+  rpc GetIsConcern(GetIsConcernRequest) returns(GetIsConcernResponse);
+  rpc GetUserConcern(GetUserConcernRequest) returns(GetConcernResponse);
+  rpc GetUserFriend(GetUserFriendRequest) returns(GetFriendResponse);
+}

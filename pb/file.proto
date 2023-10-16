@@ -1,0 +1,29 @@
+syntax="proto3";
+option go_package = "file/";
+import "google/protobuf/empty.proto";
+
+message UploadFileRequest {
+  string FilePath = 1;
+}
+
+message UploadFileResponse {
+  int64 FileId = 1;
+}
+
+message GetFileRequest {
+  int64 FileId = 1;
+}
+
+message GetFileResponse {
+  string FileUrl = 1;
+}
+
+message DeleteFileRequest{
+  int64 FileId = 1;
+}
+service FileService{
+  rpc UploadImageByPath(UploadFileRequest) returns (UploadFileResponse);
+  rpc UploadVideoByPath(UploadFileRequest) returns (UploadFileResponse);
+  rpc GetFile(GetFileRequest) returns (GetFileResponse);
+  rpc DeleteFile(DeleteFileRequest) returns (google.protobuf.Empty);
+}
