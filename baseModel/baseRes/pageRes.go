@@ -1,6 +1,6 @@
 package baseRes
 
-import "mucy-core/sqls"
+import "github.com/freddyfeng-fy/mucy-core/sqls"
 
 // PageResult 分页返回数据
 type PageResult struct {

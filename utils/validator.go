@@ -2,8 +2,8 @@ package utils
 
 import (
 	"github.com/asaskevich/govalidator"
+	"github.com/freddyfeng-fy/mucy-core/utils/strs"
 	"github.com/go-playground/validator/v10"
-	"mucy-core/utils/strs"
 	"regexp"
 )
 

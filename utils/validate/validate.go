@@ -2,9 +2,9 @@ package validate
 
 import (
 	"errors"
+	"github.com/freddyfeng-fy/mucy-core/i18n"
+	"github.com/freddyfeng-fy/mucy-core/utils/strs"
 	"github.com/gin-gonic/gin"
-	"mucy-core/i18n"
-	"mucy-core/utils/strs"
 	"regexp"
 )
 

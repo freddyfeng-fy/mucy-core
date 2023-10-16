@@ -1,8 +1,8 @@
 package baseError
 
 import (
+	"github.com/freddyfeng-fy/mucy-core/i18n"
 	"github.com/gin-gonic/gin"
-	"mucy-core/i18n"
 )
 
 type CustomError struct {

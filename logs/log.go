@@ -1,11 +1,11 @@
 package logs
 
 import (
+	"github.com/freddyfeng-fy/mucy-core/core"
+	"github.com/freddyfeng-fy/mucy-core/utils"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"mucy-core/core"
-	"mucy-core/utils"
 	"os"
 	"time"
 )

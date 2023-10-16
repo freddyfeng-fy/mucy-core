@@ -2,8 +2,8 @@ package markdown
 
 import (
 	"github.com/88250/lute"
-	"mucy-core/html"
-	"mucy-core/utils/strs"
+	"github.com/freddyfeng-fy/mucy-core/html"
+	"github.com/freddyfeng-fy/mucy-core/utils/strs"
 	"sync"
 )
 

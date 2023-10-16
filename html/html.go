@@ -1,8 +1,8 @@
 package html
 
 import (
-	"mucy-core/text"
-	"mucy-core/utils/strs"
+	"github.com/freddyfeng-fy/mucy-core/text"
+	"github.com/freddyfeng-fy/mucy-core/utils/strs"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"

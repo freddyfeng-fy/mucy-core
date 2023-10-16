@@ -1,4 +1,4 @@
-module mucy-core
+module github.com/freddyfeng-fy/mucy-core
 
 go 1.20
 

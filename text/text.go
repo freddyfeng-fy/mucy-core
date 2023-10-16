@@ -1,7 +1,7 @@
 package text
 
 import (
-	"mucy-core/utils/strs"
+	"github.com/freddyfeng-fy/mucy-core/utils/strs"
 	"strings"
 )
 

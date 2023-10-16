@@ -1,8 +1,8 @@
 package baseRes
 
 import (
+	"github.com/freddyfeng-fy/mucy-core/baseModel/baseError"
 	"github.com/gin-gonic/gin"
-	"mucy-core/baseModel/baseError"
 	"net/http"
 )
 

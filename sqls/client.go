@@ -3,6 +3,8 @@ package sqls
 import "C"
 import (
 	"fmt"
+	"github.com/freddyfeng-fy/mucy-core/core"
+	"github.com/freddyfeng-fy/mucy-core/logs"
 	"go.uber.org/zap"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"gorm.io/driver/mysql"
@@ -12,8 +14,6 @@ import (
 	"gorm.io/gorm/schema"
 	"io"
 	"log"
-	"mucy-core/core"
-	"mucy-core/logs"
 	"os"
 	"strconv"
 	"time"
