@@ -1,6 +1,5 @@
 package sqls
 
-import "C"
 import (
 	"fmt"
 	"github.com/freddyfeng-fy/mucy-core/core"
