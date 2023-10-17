@@ -82,6 +82,24 @@ services:
         - backend
       restart: always
 
+  mucy-config:
+    image: ghcr.io/freddyfeng-fy/mucy-config-server:prod
+    container_name: 'mucy-config'
+    ports:
+      - "10003:10003"
+    networks:
+      - backend
+    restart: always
+
+  mucy-file:
+      image: ghcr.io/freddyfeng-fy/mucy-file-server:prod
+      container_name: 'mucy-file'
+      ports:
+        - "10002:10002"
+      networks:
+        - backend
+      restart: always
+
 #  elasticsearch:
 #    image: elasticsearch:7.12.0
 #    container_name: mucy-elasticsearch
