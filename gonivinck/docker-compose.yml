@@ -73,6 +73,15 @@ services:
       - backend
     restart: always
 
+  mucy-user:
+      image: ghcr.io/freddyfeng-fy/mucy-user-server:prod
+      container_name: 'mucy-user'
+      ports:
+        - "10001:10001"
+      networks:
+        - backend
+      restart: always
+
 #  elasticsearch:
 #    image: elasticsearch:7.12.0
 #    container_name: mucy-elasticsearch
