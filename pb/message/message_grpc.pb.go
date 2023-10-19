@@ -7,7 +7,11 @@
 package message
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -15,12 +19,19 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-const ()
+const (
+	MessageService_SendSystemNotice_FullMethodName  = "/MessageService/SendSystemNotice"
+	MessageService_SendLikeNotice_FullMethodName    = "/MessageService/SendLikeNotice"
+	MessageService_SendCommentNotice_FullMethodName = "/MessageService/SendCommentNotice"
+)
 
 // MessageServiceClient is the client API for MessageService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageServiceClient interface {
+	SendSystemNotice(ctx context.Context, in *SendSystemNoticeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SendLikeNotice(ctx context.Context, in *SendLikeNoticeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SendCommentNotice(ctx context.Context, in *SendCommentNoticeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type messageServiceClient struct {
@@ -31,10 +42,40 @@ func NewMessageServiceClient(cc grpc.ClientConnInterface) MessageServiceClient {
 	return &messageServiceClient{cc}
 }
 
+func (c *messageServiceClient) SendSystemNotice(ctx context.Context, in *SendSystemNoticeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, MessageService_SendSystemNotice_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) SendLikeNotice(ctx context.Context, in *SendLikeNoticeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, MessageService_SendLikeNotice_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) SendCommentNotice(ctx context.Context, in *SendCommentNoticeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, MessageService_SendCommentNotice_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageServiceServer is the server API for MessageService service.
 // All implementations must embed UnimplementedMessageServiceServer
 // for forward compatibility
 type MessageServiceServer interface {
+	SendSystemNotice(context.Context, *SendSystemNoticeRequest) (*emptypb.Empty, error)
+	SendLikeNotice(context.Context, *SendLikeNoticeRequest) (*emptypb.Empty, error)
+	SendCommentNotice(context.Context, *SendCommentNoticeRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedMessageServiceServer()
 }
 
@@ -42,6 +83,15 @@ type MessageServiceServer interface {
 type UnimplementedMessageServiceServer struct {
 }
 
+func (UnimplementedMessageServiceServer) SendSystemNotice(context.Context, *SendSystemNoticeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendSystemNotice not implemented")
+}
+func (UnimplementedMessageServiceServer) SendLikeNotice(context.Context, *SendLikeNoticeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendLikeNotice not implemented")
+}
+func (UnimplementedMessageServiceServer) SendCommentNotice(context.Context, *SendCommentNoticeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendCommentNotice not implemented")
+}
 func (UnimplementedMessageServiceServer) mustEmbedUnimplementedMessageServiceServer() {}
 
 // UnsafeMessageServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -55,13 +105,80 @@ func RegisterMessageServiceServer(s grpc.ServiceRegistrar, srv MessageServiceSer
 	s.RegisterService(&MessageService_ServiceDesc, srv)
 }
 
+func _MessageService_SendSystemNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendSystemNoticeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).SendSystemNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_SendSystemNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).SendSystemNotice(ctx, req.(*SendSystemNoticeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_SendLikeNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendLikeNoticeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).SendLikeNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_SendLikeNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).SendLikeNotice(ctx, req.(*SendLikeNoticeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_SendCommentNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendCommentNoticeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).SendCommentNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_SendCommentNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).SendCommentNotice(ctx, req.(*SendCommentNoticeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MessageService_ServiceDesc is the grpc.ServiceDesc for MessageService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var MessageService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "MessageService",
 	HandlerType: (*MessageServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "message.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SendSystemNotice",
+			Handler:    _MessageService_SendSystemNotice_Handler,
+		},
+		{
+			MethodName: "SendLikeNotice",
+			Handler:    _MessageService_SendLikeNotice_Handler,
+		},
+		{
+			MethodName: "SendCommentNotice",
+			Handler:    _MessageService_SendCommentNotice_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "message.proto",
 }
