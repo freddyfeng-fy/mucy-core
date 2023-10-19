@@ -7,10 +7,6 @@ message SendNotice{
   int64 UserId = 2;
   string Content = 3;
   string QuoteContent = 4;
-  string Disk = 5;
-  int32 Type = 6;
-  string ExtraData = 7;
-  int32 Status = 8;
 }
 
 message SendSystemNoticeRequest{
