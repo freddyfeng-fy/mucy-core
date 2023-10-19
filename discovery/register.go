@@ -47,6 +47,8 @@ func (r *Register) Register(srvInfo Server, ttl int64) (chan<- struct{}, error) 
 	if r.cli, err = clientv3.New(clientv3.Config{
 		Endpoints:   r.EtcdAddrs,
 		DialTimeout: time.Duration(r.DialTimeout) * time.Second,
+		Username:    "root",     //这里写用户名
+		Password:    "MucyProd", //这里写密码
 	}); err != nil {
 		return nil, err
 	}
