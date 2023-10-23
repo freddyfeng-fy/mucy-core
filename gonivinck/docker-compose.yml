@@ -56,67 +56,67 @@ services:
     networks:
       - backend
     restart: always
-  postgres:
-    image: postgres:16.0
-    container_name: 'mucy-postgres'
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: mucy-prod #postgres
-      POSTGRES_PASSWORD: FY950319 #1234
-      PGDATA: /var/lib/postgresql/data
-      TZ: Asia/Shanghai
-      PGTZ: Asia/Shanghai
-    volumes:
-      - ./postgres:/var/lib/postgresql/data
-    ports:
-      - "7005:5432"
-    networks:
-      - backend
-    restart: always
-  mucy-user:
-    image: ghcr.io/freddyfeng-fy/mucy-user-server:prod
-    container_name: 'mucy-user'
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "10001:10001"
-    networks:
-      - backend
-    restart: always
-  mucy-file:
-      image: ghcr.io/freddyfeng-fy/mucy-file-server:prod
-      container_name: 'mucy-file'
-      volumes:
-        - /etc/timezone:/etc/timezone:ro
-        - /etc/localtime:/etc/localtime:ro
-      ports:
-        - "10002:10002"
-      networks:
-        - backend
-      restart: always
-  mucy-config:
-    image: ghcr.io/freddyfeng-fy/mucy-config-server:prod
-    container_name: 'mucy-config'
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "10003:10003"
-    networks:
-      - backend
-    restart: always
-  mucy-message:
-    image: ghcr.io/freddyfeng-fy/mucy-message-server:prod
-    container_name: 'mucy-message'
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "10004:10004"
-    networks:
-      - backend
-    restart: always
+#  postgres:
+#    image: postgres:16.0
+#    container_name: 'mucy-postgres'
+#    environment:
+#      POSTGRES_DB: postgres
+#      POSTGRES_USER: mucy-prod #postgres
+#      POSTGRES_PASSWORD: FY950319 #1234
+#      PGDATA: /var/lib/postgresql/data
+#      TZ: Asia/Shanghai
+#      PGTZ: Asia/Shanghai
+#    volumes:
+#      - ./postgres:/var/lib/postgresql/data
+#    ports:
+#      - "7005:5432"
+#    networks:
+#      - backend
+#    restart: always
+#  mucy-user:
+#    image: ghcr.io/freddyfeng-fy/mucy-user-server:prod
+#    container_name: 'mucy-user'
+#    volumes:
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
+#    ports:
+#      - "10001:10001"
+#    networks:
+#      - backend
+#    restart: always
+#  mucy-file:
+#      image: ghcr.io/freddyfeng-fy/mucy-file-server:prod
+#      container_name: 'mucy-file'
+#      volumes:
+#        - /etc/timezone:/etc/timezone:ro
+#        - /etc/localtime:/etc/localtime:ro
+#      ports:
+#        - "10002:10002"
+#      networks:
+#        - backend
+#      restart: always
+#  mucy-config:
+#    image: ghcr.io/freddyfeng-fy/mucy-config-server:prod
+#    container_name: 'mucy-config'
+#    volumes:
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
+#    ports:
+#      - "10003:10003"
+#    networks:
+#      - backend
+#    restart: always
+#  mucy-message:
+#    image: ghcr.io/freddyfeng-fy/mucy-message-server:prod
+#    container_name: 'mucy-message'
+#    volumes:
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
+#    ports:
+#      - "10004:10004"
+#    networks:
+#      - backend
+#    restart: always
 
 
 #  elasticsearch:

@@ -8,6 +8,6 @@ deployment:
       # If not set, by default all IP access is allowed.
   etcd:
     host:
-      - "http://gonivinck-etcd:2379"
+      - "http://mucy-etcd:2379"
     prefix: "/apisix"
     timeout: 30
