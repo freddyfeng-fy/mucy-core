@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -24,6 +25,7 @@ const (
 	UserService_GetIsConcern_FullMethodName   = "/UserService/GetIsConcern"
 	UserService_GetUserConcern_FullMethodName = "/UserService/GetUserConcern"
 	UserService_GetUserFriend_FullMethodName  = "/UserService/GetUserFriend"
+	UserService_EditExperience_FullMethodName = "/UserService/EditExperience"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -35,6 +37,7 @@ type UserServiceClient interface {
 	GetIsConcern(ctx context.Context, in *GetIsConcernRequest, opts ...grpc.CallOption) (*GetIsConcernResponse, error)
 	GetUserConcern(ctx context.Context, in *GetUserConcernRequest, opts ...grpc.CallOption) (*GetConcernResponse, error)
 	GetUserFriend(ctx context.Context, in *GetUserFriendRequest, opts ...grpc.CallOption) (*GetFriendResponse, error)
+	EditExperience(ctx context.Context, in *EditExperienceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userServiceClient struct {
@@ -90,6 +93,15 @@ func (c *userServiceClient) GetUserFriend(ctx context.Context, in *GetUserFriend
 	return out, nil
 }
 
+func (c *userServiceClient) EditExperience(ctx context.Context, in *EditExperienceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, UserService_EditExperience_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -99,6 +111,7 @@ type UserServiceServer interface {
 	GetIsConcern(context.Context, *GetIsConcernRequest) (*GetIsConcernResponse, error)
 	GetUserConcern(context.Context, *GetUserConcernRequest) (*GetConcernResponse, error)
 	GetUserFriend(context.Context, *GetUserFriendRequest) (*GetFriendResponse, error)
+	EditExperience(context.Context, *EditExperienceRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -120,6 +133,9 @@ func (UnimplementedUserServiceServer) GetUserConcern(context.Context, *GetUserCo
 }
 func (UnimplementedUserServiceServer) GetUserFriend(context.Context, *GetUserFriendRequest) (*GetFriendResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserFriend not implemented")
+}
+func (UnimplementedUserServiceServer) EditExperience(context.Context, *EditExperienceRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditExperience not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -224,6 +240,24 @@ func _UserService_GetUserFriend_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_EditExperience_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditExperienceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).EditExperience(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_EditExperience_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).EditExperience(ctx, req.(*EditExperienceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +284,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserFriend",
 			Handler:    _UserService_GetUserFriend_Handler,
+		},
+		{
+			MethodName: "EditExperience",
+			Handler:    _UserService_EditExperience_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
