@@ -30,6 +30,22 @@ message EditExperienceRequest{
   int32  Experience=2;
 }
 
+message EditBalanceRequest{
+  int64 UserId=1;
+  int32 Balance=2;
+  string Cause=3;
+  string SourceType=4;
+  int64 SourceId=5;
+}
+
+message EditScoreRequest{
+  int64 UserId=1;
+  int32 Score=2;
+  string Cause=3;
+  string SourceType=4;
+  int64 SourceId=5;
+}
+
 
 message RoleResponse{
   string Name=1;
@@ -78,5 +94,7 @@ service UserService{
   rpc GetIsConcern(GetIsConcernRequest) returns(GetIsConcernResponse);
   rpc GetUserConcern(GetUserConcernRequest) returns(GetConcernResponse);
   rpc GetUserFriend(GetUserFriendRequest) returns(GetFriendResponse);
+  rpc EditEditScore(EditScoreRequest) returns(google.protobuf.Empty);
+  rpc EditEditBalance(EditBalanceRequest) returns(google.protobuf.Empty);
   rpc EditExperience(EditExperienceRequest) returns(google.protobuf.Empty);
 }

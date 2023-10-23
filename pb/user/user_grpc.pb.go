@@ -20,12 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserService_GetUserCurrent_FullMethodName = "/UserService/GetUserCurrent"
-	UserService_GetUserInfo_FullMethodName    = "/UserService/GetUserInfo"
-	UserService_GetIsConcern_FullMethodName   = "/UserService/GetIsConcern"
-	UserService_GetUserConcern_FullMethodName = "/UserService/GetUserConcern"
-	UserService_GetUserFriend_FullMethodName  = "/UserService/GetUserFriend"
-	UserService_EditExperience_FullMethodName = "/UserService/EditExperience"
+	UserService_GetUserCurrent_FullMethodName  = "/UserService/GetUserCurrent"
+	UserService_GetUserInfo_FullMethodName     = "/UserService/GetUserInfo"
+	UserService_GetIsConcern_FullMethodName    = "/UserService/GetIsConcern"
+	UserService_GetUserConcern_FullMethodName  = "/UserService/GetUserConcern"
+	UserService_GetUserFriend_FullMethodName   = "/UserService/GetUserFriend"
+	UserService_EditEditScore_FullMethodName   = "/UserService/EditEditScore"
+	UserService_EditEditBalance_FullMethodName = "/UserService/EditEditBalance"
+	UserService_EditExperience_FullMethodName  = "/UserService/EditExperience"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -37,6 +39,8 @@ type UserServiceClient interface {
 	GetIsConcern(ctx context.Context, in *GetIsConcernRequest, opts ...grpc.CallOption) (*GetIsConcernResponse, error)
 	GetUserConcern(ctx context.Context, in *GetUserConcernRequest, opts ...grpc.CallOption) (*GetConcernResponse, error)
 	GetUserFriend(ctx context.Context, in *GetUserFriendRequest, opts ...grpc.CallOption) (*GetFriendResponse, error)
+	EditEditScore(ctx context.Context, in *EditScoreRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	EditEditBalance(ctx context.Context, in *EditBalanceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	EditExperience(ctx context.Context, in *EditExperienceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -93,6 +97,24 @@ func (c *userServiceClient) GetUserFriend(ctx context.Context, in *GetUserFriend
 	return out, nil
 }
 
+func (c *userServiceClient) EditEditScore(ctx context.Context, in *EditScoreRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, UserService_EditEditScore_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) EditEditBalance(ctx context.Context, in *EditBalanceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, UserService_EditEditBalance_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) EditExperience(ctx context.Context, in *EditExperienceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserService_EditExperience_FullMethodName, in, out, opts...)
@@ -111,6 +133,8 @@ type UserServiceServer interface {
 	GetIsConcern(context.Context, *GetIsConcernRequest) (*GetIsConcernResponse, error)
 	GetUserConcern(context.Context, *GetUserConcernRequest) (*GetConcernResponse, error)
 	GetUserFriend(context.Context, *GetUserFriendRequest) (*GetFriendResponse, error)
+	EditEditScore(context.Context, *EditScoreRequest) (*emptypb.Empty, error)
+	EditEditBalance(context.Context, *EditBalanceRequest) (*emptypb.Empty, error)
 	EditExperience(context.Context, *EditExperienceRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
@@ -133,6 +157,12 @@ func (UnimplementedUserServiceServer) GetUserConcern(context.Context, *GetUserCo
 }
 func (UnimplementedUserServiceServer) GetUserFriend(context.Context, *GetUserFriendRequest) (*GetFriendResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserFriend not implemented")
+}
+func (UnimplementedUserServiceServer) EditEditScore(context.Context, *EditScoreRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditEditScore not implemented")
+}
+func (UnimplementedUserServiceServer) EditEditBalance(context.Context, *EditBalanceRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditEditBalance not implemented")
 }
 func (UnimplementedUserServiceServer) EditExperience(context.Context, *EditExperienceRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EditExperience not implemented")
@@ -240,6 +270,42 @@ func _UserService_GetUserFriend_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_EditEditScore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditScoreRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).EditEditScore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_EditEditScore_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).EditEditScore(ctx, req.(*EditScoreRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_EditEditBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).EditEditBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_EditEditBalance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).EditEditBalance(ctx, req.(*EditBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_EditExperience_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EditExperienceRequest)
 	if err := dec(in); err != nil {
@@ -284,6 +350,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserFriend",
 			Handler:    _UserService_GetUserFriend_Handler,
+		},
+		{
+			MethodName: "EditEditScore",
+			Handler:    _UserService_EditEditScore_Handler,
+		},
+		{
+			MethodName: "EditEditBalance",
+			Handler:    _UserService_EditEditBalance_Handler,
 		},
 		{
 			MethodName: "EditExperience",
