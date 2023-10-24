@@ -58,3 +58,14 @@ func SplitSlice(input interface{}, segLength int) interface{} {
 	}
 	return listOfElem.Interface()
 }
+
+func containsDuplicate(nums []int) bool {
+	n := make(map[int]int)
+	for i := 0; i < len(nums); i++ {
+		if _, ok := n[nums[i]]; ok {
+			return true
+		}
+		n[nums[i]] = i
+	}
+	return false
+}
