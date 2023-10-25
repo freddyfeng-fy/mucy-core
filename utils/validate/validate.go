@@ -2,7 +2,6 @@ package validate
 
 import (
 	"errors"
-	"github.com/freddyfeng-fy/mucy-core/i18n"
 	"github.com/freddyfeng-fy/mucy-core/utils/strs"
 	"github.com/gin-gonic/gin"
 	"regexp"
@@ -41,13 +40,13 @@ func IsEmail(email string) (err error) {
 // IsPassword 是否是合法的密码
 func IsPassword(c *gin.Context, password, rePassword string) error {
 	if strs.IsBlank(password) {
-		return errors.New(i18n.Text(c, "passwordNotNull"))
+		return errors.New("passwordNotNull")
 	}
 	if strs.RuneLen(password) < 6 {
-		return errors.New(i18n.Text(c, "passwordTooSimple"))
+		return errors.New("passwordTooSimple")
 	}
 	if password != rePassword {
-		return errors.New(i18n.Text(c, "twoPasswordsEnteredNotMatch"))
+		return errors.New("twoPasswordsEnteredNotMatch")
 	}
 	return nil
 }
