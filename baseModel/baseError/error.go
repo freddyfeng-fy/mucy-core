@@ -1,7 +1,6 @@
 package baseError
 
 import (
-	"github.com/freddyfeng-fy/mucy-core/i18n"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,7 +18,7 @@ type CustomErrors struct {
 var c = &gin.Context{}
 
 var Errors = CustomErrors{
-	BusinessError: CustomError{40000, i18n.Text(c, "UnknownException")},
-	ValidateError: CustomError{42200, "请求参数错误"},
-	TokenError:    CustomError{40100, "登录授权失效"},
+	BusinessError: CustomError{40000, "Unknown exception"},
+	ValidateError: CustomError{42200, "The request parameter is incorrect"},
+	TokenError:    CustomError{40100, "The login authorization is invalid"},
 }
