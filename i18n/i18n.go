@@ -3,8 +3,10 @@ package i18n
 import (
 	"errors"
 	"github.com/BurntSushi/toml"
+	"github.com/freddyfeng-fy/mucy-core/core"
 	"github.com/gin-gonic/gin"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"go.uber.org/zap"
 	"golang.org/x/text/language"
 )
 
@@ -32,7 +34,10 @@ func NewBundle(tag language.Tag, tomls ...string) *Bundle {
 	bundle := i18n.NewBundle(tag)
 	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
 	for _, file := range tomls {
-		bundle.LoadMessageFile(file)
+		_, err := bundle.LoadMessageFile(file)
+		if err != nil {
+			core.App.Log.Error("i18n err", zap.Any("err", err))
+		}
 	}
 	return bundle
 }
