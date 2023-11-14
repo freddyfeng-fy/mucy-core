@@ -1,63 +1,41 @@
 package google
 
 import (
-	recaptcha "cloud.google.com/go/recaptchaenterprise/v2/apiv1"
-	"cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
-	"context"
-	"fmt"
-	"github.com/freddyfeng-fy/mucy-core/core"
-	"go.uber.org/zap"
-	"golang.org/x/oauth2"
-	"google.golang.org/api/option"
+	"github.com/freddyfeng-fy/mucy-core/jsons"
+	"io"
+	"net/http"
+	"net/url"
 )
 
 var (
-	google *Conf
+	conf *Conf
 )
 
 func InitReCaptchaConfig(config *Conf) {
-	google = config
+	conf = config
 }
 
-func ReCaptchaAssessment(token string) bool {
-	// 创建客户端
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(&oauth2.Token{
-		AccessToken: google.AccessToken,
-	})
-	client, err := recaptcha.NewClient(ctx, option.WithTokenSource(ts))
+func VerifyRecaptcha(responseToken string) (*RecaptchaResponse, error) {
+	resp, err := http.PostForm("https://www.google.com/recaptcha/api/siteverify",
+		url.Values{
+			"secret":   {conf.ReCaptCha.RecaptchaKey},
+			"response": {responseToken},
+		})
 	if err != nil {
-		core.App.Log.Error("err:", zap.Any("err:", err))
-		return false
+		return nil, err
 	}
-	defer client.Close()
+	defer resp.Body.Close()
 
-	// 创建评估请求
-	assessment := &recaptchaenterprisepb.Assessment{
-		Event: &recaptchaenterprisepb.Event{
-			Token:   token,
-			SiteKey: google.ReCaptCha.RecaptchaKey,
-		},
-	}
-
-	captCheReq := &recaptchaenterprisepb.CreateAssessmentRequest{
-		Parent:     fmt.Sprintf("projects/%s", google.ReCaptCha.ProjectID),
-		Assessment: assessment,
-	}
-
-	// 调用服务
-	resp, err := client.CreateAssessment(ctx, captCheReq)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		core.App.Log.Error("err:", zap.Any("err:", err))
-		return false
+		return nil, err
 	}
 
-	// 检查评估结果
-	if !resp.TokenProperties.Valid {
-		return false
-	} else if resp.RiskAnalysis.Score < 0.5 {
-		return false
-	} else {
-		return true
+	var recaptchaResp RecaptchaResponse
+	err = jsons.Cjson.Unmarshal(body, &recaptchaResp)
+	if err != nil {
+		return nil, err
 	}
+
+	return &recaptchaResp, nil
 }
