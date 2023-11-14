@@ -2,6 +2,7 @@ package signin
 
 import (
 	"context"
+	googleConf "github.com/freddyfeng-fy/mucy-core/google"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
@@ -10,13 +11,18 @@ import (
 
 var (
 	oauth2Config = &oauth2.Config{
-		ClientID:     "YOUR_CLIENT_ID",
-		ClientSecret: "YOUR_CLIENT_SECRET",
-		RedirectURL:  "YOUR_REDIRECT_URL",
+		ClientID:     conf.OAuth.ClientID,
+		ClientSecret: conf.OAuth.ClientSecret,
+		RedirectURL:  conf.OAuth.RedirectURL,
 		Scopes:       []string{people.UserinfoEmailScope},
 		Endpoint:     google.Endpoint,
 	}
+	conf *googleConf.Conf
 )
+
+func InitReCaptchaConfig(config *googleConf.Conf) {
+	conf = config
+}
 
 func GoogleSignin() string {
 	return oauth2Config.AuthCodeURL("state", oauth2.AccessTypeOffline)
