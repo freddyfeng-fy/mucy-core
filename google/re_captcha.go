@@ -16,7 +16,7 @@ func InitReCaptchaConfig(config *Conf) {
 }
 
 func VerifyRecaptcha(responseToken string) (*RecaptchaResponse, error) {
-	resp, err := http.PostForm("https://www.google.com/recaptcha/api/siteverify",
+	resp, err := http.PostForm("https://www.recaptcha.net/recaptcha/api/siteverify",
 		url.Values{
 			"secret":   {conf.ReCaptCha.RecaptchaKey},
 			"response": {responseToken},
