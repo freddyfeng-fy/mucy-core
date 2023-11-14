@@ -1,6 +1,6 @@
 package google
 
-type Google struct {
+type Conf struct {
 	AccessToken string    `mapstructure:"accessToken" json:"accessToken" yaml:"accessToken"`
 	ReCaptCha   ReCaptCha `mapstructure:"reCaptCha" json:"reCaptCha" yaml:"reCaptCha"`
 }

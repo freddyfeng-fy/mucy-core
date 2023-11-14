@@ -12,10 +12,10 @@ import (
 )
 
 var (
-	google *Google
+	google *Conf
 )
 
-func initReCaptchaConfig(config *Google) {
+func InitReCaptchaConfig(config *Conf) {
 	google = config
 }
 
