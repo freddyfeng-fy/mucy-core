@@ -18,11 +18,11 @@ var (
 	}
 )
 
-func googleSignin() string {
+func GoogleSignin() string {
 	return oauth2Config.AuthCodeURL("state", oauth2.AccessTypeOffline)
 }
 
-func googleCallback(code string) (err error, userInfo *people.Person) {
+func GoogleCallback(code string) (err error, userInfo *people.Person) {
 	ctx := context.Background()
 	token, err := oauth2Config.Exchange(ctx, code)
 	if err != nil {
