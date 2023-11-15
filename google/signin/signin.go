@@ -10,6 +10,12 @@ import (
 )
 
 var (
+	oauth2Config *oauth2.Config
+	conf         *googleConf.Conf
+)
+
+func InitReCaptchaConfig(config *googleConf.Conf) {
+	conf = config
 	oauth2Config = &oauth2.Config{
 		ClientID:     conf.OAuth.ClientID,
 		ClientSecret: conf.OAuth.ClientSecret,
@@ -17,11 +23,6 @@ var (
 		Scopes:       []string{people.UserinfoEmailScope},
 		Endpoint:     google.Endpoint,
 	}
-	conf *googleConf.Conf
-)
-
-func InitReCaptchaConfig(config *googleConf.Conf) {
-	conf = config
 }
 
 func GoogleSignin() string {
