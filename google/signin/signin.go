@@ -20,9 +20,8 @@ func InitSigninConfig(config *googleConf.Conf) {
 		ClientID:     conf.OAuth.ClientID,
 		ClientSecret: conf.OAuth.ClientSecret,
 		RedirectURL:  conf.OAuth.RedirectURL,
-		Scopes: []string{people.UserinfoEmailScope, people.UserGenderReadScope, people.UserOrganizationReadScope,
-			people.UserPhonenumbersReadScope, people.UserinfoProfileScope},
-		Endpoint: google.Endpoint,
+		Scopes:       []string{people.UserinfoEmailScope, people.UserinfoProfileScope},
+		Endpoint:     google.Endpoint,
 	}
 }
 
