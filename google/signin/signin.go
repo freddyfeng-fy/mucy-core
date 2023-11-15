@@ -14,7 +14,7 @@ var (
 	conf         *googleConf.Conf
 )
 
-func InitReCaptchaConfig(config *googleConf.Conf) {
+func InitSigninConfig(config *googleConf.Conf) {
 	conf = config
 	oauth2Config = &oauth2.Config{
 		ClientID:     conf.OAuth.ClientID,
