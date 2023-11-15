@@ -2,6 +2,7 @@ package signin
 
 import (
 	"context"
+	"fmt"
 	googleConf "github.com/freddyfeng-fy/mucy-core/google"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -19,13 +20,13 @@ func InitSigninConfig(config *googleConf.Conf) {
 	oauth2Config = &oauth2.Config{
 		ClientID:     conf.OAuth.ClientID,
 		ClientSecret: conf.OAuth.ClientSecret,
-		RedirectURL:  conf.OAuth.RedirectURL,
 		Scopes:       []string{people.UserinfoEmailScope, people.UserinfoProfileScope},
 		Endpoint:     google.Endpoint,
 	}
 }
 
-func GoogleSignin() string {
+func GoogleSignin(lng string) string {
+	oauth2Config.RedirectURL = fmt.Sprintf("%s/%s/signin/google", conf.OAuth.RedirectURL, lng)
 	return oauth2Config.AuthCodeURL("state", oauth2.AccessTypeOffline)
 }
 
