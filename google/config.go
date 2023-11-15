@@ -12,7 +12,6 @@ type OAuth struct {
 }
 
 type ReCaptCha struct {
-	ProjectID    string `mapstructure:"projectID" json:"projectID" yaml:"projectID"`
 	RecaptchaKey string `mapstructure:"recaptchaKey" json:"recaptchaKey" yaml:"recaptchaKey"`
 }
 
