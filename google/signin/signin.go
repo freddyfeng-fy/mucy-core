@@ -32,11 +32,7 @@ func GoogleSignin() string {
 }
 
 func GoogleCallback(code string) (err error, userInfo *people.Person) {
-	ctx := context.Background()
-	token, err := oauth2Config.Exchange(ctx, code)
-	if err != nil {
-		return
-	}
+	rootCtx := context.Background()
 	var httpClient *http.Client
 	// 如果提供了代理地址，则使用代理
 	if conf.OAuth.Proxy != "" {
@@ -49,8 +45,13 @@ func GoogleCallback(code string) (err error, userInfo *people.Person) {
 	} else {
 		httpClient = http.DefaultClient
 	}
+	ctx := context.WithValue(rootCtx, oauth2.HTTPClient, httpClient)
+	token, err := oauth2Config.Exchange(ctx, code)
+	if err != nil {
+		return
+	}
 	// 使用token创建一个新的服务
-	peopleService, err := people.NewService(ctx, option.WithHTTPClient(httpClient), option.WithTokenSource(oauth2Config.TokenSource(ctx, token)))
+	peopleService, err := people.NewService(ctx, option.WithTokenSource(oauth2Config.TokenSource(ctx, token)))
 	if err != nil {
 		return
 	}
