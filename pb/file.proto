@@ -21,9 +21,19 @@ message GetFileResponse {
 message DeleteFileRequest{
   int64 FileId = 1;
 }
+
+message SaveUrlRequest {
+  string Url = 1;
+}
+
+message SaveUrlResponse {
+  int64 FileId = 1;
+}
+
 service FileService{
   rpc UploadImageByPath(UploadFileRequest) returns (UploadFileResponse);
   rpc UploadVideoByPath(UploadFileRequest) returns (UploadFileResponse);
   rpc GetFile(GetFileRequest) returns (GetFileResponse);
   rpc DeleteFile(DeleteFileRequest) returns (google.protobuf.Empty);
+  rpc SaveUrl(SaveUrlRequest) returns (SaveUrlResponse);
 }

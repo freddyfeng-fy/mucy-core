@@ -24,6 +24,7 @@ const (
 	FileService_UploadVideoByPath_FullMethodName = "/FileService/UploadVideoByPath"
 	FileService_GetFile_FullMethodName           = "/FileService/GetFile"
 	FileService_DeleteFile_FullMethodName        = "/FileService/DeleteFile"
+	FileService_SaveUrl_FullMethodName           = "/FileService/SaveUrl"
 )
 
 // FileServiceClient is the client API for FileService service.
@@ -34,6 +35,7 @@ type FileServiceClient interface {
 	UploadVideoByPath(ctx context.Context, in *UploadFileRequest, opts ...grpc.CallOption) (*UploadFileResponse, error)
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
 	DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SaveUrl(ctx context.Context, in *SaveUrlRequest, opts ...grpc.CallOption) (*SaveUrlResponse, error)
 }
 
 type fileServiceClient struct {
@@ -80,6 +82,15 @@ func (c *fileServiceClient) DeleteFile(ctx context.Context, in *DeleteFileReques
 	return out, nil
 }
 
+func (c *fileServiceClient) SaveUrl(ctx context.Context, in *SaveUrlRequest, opts ...grpc.CallOption) (*SaveUrlResponse, error) {
+	out := new(SaveUrlResponse)
+	err := c.cc.Invoke(ctx, FileService_SaveUrl_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FileServiceServer is the server API for FileService service.
 // All implementations must embed UnimplementedFileServiceServer
 // for forward compatibility
@@ -88,6 +99,7 @@ type FileServiceServer interface {
 	UploadVideoByPath(context.Context, *UploadFileRequest) (*UploadFileResponse, error)
 	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
 	DeleteFile(context.Context, *DeleteFileRequest) (*emptypb.Empty, error)
+	SaveUrl(context.Context, *SaveUrlRequest) (*SaveUrlResponse, error)
 	mustEmbedUnimplementedFileServiceServer()
 }
 
@@ -106,6 +118,9 @@ func (UnimplementedFileServiceServer) GetFile(context.Context, *GetFileRequest) 
 }
 func (UnimplementedFileServiceServer) DeleteFile(context.Context, *DeleteFileRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFile not implemented")
+}
+func (UnimplementedFileServiceServer) SaveUrl(context.Context, *SaveUrlRequest) (*SaveUrlResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveUrl not implemented")
 }
 func (UnimplementedFileServiceServer) mustEmbedUnimplementedFileServiceServer() {}
 
@@ -192,6 +207,24 @@ func _FileService_DeleteFile_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FileService_SaveUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveUrlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FileServiceServer).SaveUrl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FileService_SaveUrl_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FileServiceServer).SaveUrl(ctx, req.(*SaveUrlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FileService_ServiceDesc is the grpc.ServiceDesc for FileService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -214,6 +247,10 @@ var FileService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteFile",
 			Handler:    _FileService_DeleteFile_Handler,
+		},
+		{
+			MethodName: "SaveUrl",
+			Handler:    _FileService_SaveUrl_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
