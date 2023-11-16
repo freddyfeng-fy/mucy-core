@@ -7,6 +7,8 @@ import (
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
 	"google.golang.org/api/people/v1"
+	"net/http"
+	"net/url"
 )
 
 var (
@@ -20,11 +22,8 @@ func InitSigninConfig(config *googleConf.Conf) {
 		ClientID:     conf.OAuth.ClientID,
 		ClientSecret: conf.OAuth.ClientSecret,
 		RedirectURL:  conf.OAuth.RedirectURL,
-		Scopes: []string{people.UserinfoEmailScope, people.UserinfoProfileScope, people.UserEmailsReadScope,
-			people.ContactsOtherReadonlyScope, people.ContactsReadonlyScope, people.DirectoryReadonlyScope,
-			people.UserAddressesReadScope, people.UserBirthdayReadScope, people.UserGenderReadScope,
-			people.UserOrganizationReadScope, people.UserPhonenumbersReadScope},
-		Endpoint: google.Endpoint,
+		Scopes:       []string{people.UserinfoEmailScope, people.UserinfoProfileScope, people.UserBirthdayReadScope},
+		Endpoint:     google.Endpoint,
 	}
 }
 
@@ -38,17 +37,26 @@ func GoogleCallback(code string) (err error, userInfo *people.Person) {
 	if err != nil {
 		return
 	}
+	var httpClient *http.Client
+	// 如果提供了代理地址，则使用代理
+	if conf.OAuth.Proxy != "" {
+		proxyURL, err := url.Parse(conf.OAuth.Proxy)
+		if err != nil {
+			return err, nil
+		}
+		transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
+		httpClient = &http.Client{Transport: transport}
+	} else {
+		httpClient = http.DefaultClient
+	}
 	// 使用token创建一个新的服务
-	peopleService, err := people.NewService(ctx, option.WithTokenSource(oauth2Config.TokenSource(ctx, token)))
+	peopleService, err := people.NewService(ctx, option.WithHTTPClient(httpClient), option.WithTokenSource(oauth2Config.TokenSource(ctx, token)))
 	if err != nil {
 		return
 	}
 	// 获取用户的信息
 	userInfo, err = peopleService.People.Get("people/me").
-		PersonFields("addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos," +
-			"emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata," +
-			"miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses," +
-			"skills,urls,userDefined").
+		PersonFields("names,photos,gender,birthdays,emailAddresses,metadata").
 		Do()
 	if err != nil {
 		return

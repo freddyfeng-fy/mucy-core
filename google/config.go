@@ -9,6 +9,7 @@ type OAuth struct {
 	ClientID     string `mapstructure:"clientID" json:"clientID" yaml:"clientID"`
 	ClientSecret string `mapstructure:"clientSecret" json:"clientSecret" yaml:"clientSecret"`
 	RedirectURL  string `mapstructure:"redirectURL" json:"redirectURL" yaml:"redirectURL"`
+	Proxy        string `mapstructure:"proxy" json:"proxy" yaml:"proxy"`
 }
 
 type ReCaptCha struct {
