@@ -7,8 +7,6 @@ import (
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
 	"google.golang.org/api/people/v1"
-	"net/http"
-	"net/url"
 )
 
 var (
@@ -33,25 +31,25 @@ func GoogleSignin() string {
 
 func GoogleCallback(code string) (err error, userInfo *people.Person) {
 	rootCtx := context.Background()
-	var httpClient *http.Client
-	// 如果提供了代理地址，则使用代理
-	if conf.OAuth.Proxy != "" {
-		proxyURL, err := url.Parse(conf.OAuth.Proxy)
-		if err != nil {
-			return err, nil
-		}
-		transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
-		httpClient = &http.Client{Transport: transport}
-	} else {
-		httpClient = http.DefaultClient
-	}
-	ctx := context.WithValue(rootCtx, oauth2.HTTPClient, httpClient)
-	token, err := oauth2Config.Exchange(ctx, code)
+	//var httpClient *http.Client
+	//// 如果提供了代理地址，则使用代理
+	//if conf.OAuth.Proxy != "" {
+	//	proxyURL, err := url.Parse(conf.OAuth.Proxy)
+	//	if err != nil {
+	//		return err, nil
+	//	}
+	//	transport := &http.Transport{Proxy: http.ProxyURL(proxyURL)}
+	//	httpClient = &http.Client{Transport: transport}
+	//} else {
+	//	httpClient = http.DefaultClient
+	//}
+	//ctx := context.WithValue(rootCtx, oauth2.HTTPClient, httpClient)
+	token, err := oauth2Config.Exchange(rootCtx, code)
 	if err != nil {
 		return
 	}
 	// 使用token创建一个新的服务
-	peopleService, err := people.NewService(ctx, option.WithHTTPClient(httpClient), option.WithTokenSource(oauth2Config.TokenSource(ctx, token)))
+	peopleService, err := people.NewService(rootCtx, option.WithTokenSource(oauth2Config.TokenSource(rootCtx, token)))
 	if err != nil {
 		return
 	}
