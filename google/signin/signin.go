@@ -22,7 +22,7 @@ func InitSigninConfig(config *googleConf.Conf) {
 		ClientID:     conf.OAuth.ClientID,
 		ClientSecret: conf.OAuth.ClientSecret,
 		RedirectURL:  conf.OAuth.RedirectURL,
-		Scopes:       []string{people.UserinfoEmailScope, people.UserinfoProfileScope, people.UserBirthdayReadScope},
+		Scopes:       []string{people.UserinfoEmailScope, people.UserinfoProfileScope},
 		Endpoint:     google.Endpoint,
 	}
 }
@@ -56,7 +56,7 @@ func GoogleCallback(code string) (err error, userInfo *people.Person) {
 	}
 	// 获取用户的信息
 	userInfo, err = peopleService.People.Get("people/me").
-		PersonFields("names,photos,gender,birthdays,emailAddresses,metadata").
+		PersonFields("names,photos,gender,emailAddresses,metadata").
 		Do()
 	if err != nil {
 		return
