@@ -51,7 +51,7 @@ func GoogleCallback(code string) (err error, userInfo *people.Person) {
 		return
 	}
 	// 使用token创建一个新的服务
-	peopleService, err := people.NewService(ctx, option.WithTokenSource(oauth2Config.TokenSource(ctx, token)))
+	peopleService, err := people.NewService(ctx, option.WithHTTPClient(httpClient), option.WithTokenSource(oauth2Config.TokenSource(ctx, token)))
 	if err != nil {
 		return
 	}
