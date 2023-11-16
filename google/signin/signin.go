@@ -55,7 +55,7 @@ func GoogleCallback(code string) (err error, userInfo *people.Person) {
 	}
 	// 获取用户的信息
 	userInfo, err = peopleService.People.Get("people/me").
-		PersonFields("names,photos,gender,emailAddresses,metadata").
+		PersonFields("names,photos,genders,emailAddresses,metadata").
 		Do()
 	if err != nil {
 		return
