@@ -41,7 +41,7 @@ func GoogleCallback(code string) (err error, userInfo *people.Person) {
 		return
 	}
 	// 获取用户的信息
-	userInfo, err = peopleService.People.Get("people/me").PersonFields("emailAddresses").Do()
+	userInfo, err = peopleService.People.Get("people/me").Do()
 	if err != nil {
 		return
 	}
