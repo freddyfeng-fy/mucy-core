@@ -1,13 +1,18 @@
 package baseModel
 
 import (
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"time"
 )
 
-// 自增ID主键
 type ID struct {
-	ID int64 `json:"id" gorm:"primaryKey;SERIAL"`
+	ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
+}
+
+func (id *ID) BeforeCreate(tx *gorm.DB) (err error) {
+	id.ID = uuid.New()
+	return nil
 }
 
 // 创建、更新时间

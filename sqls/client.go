@@ -104,6 +104,7 @@ func initPostgresGorm(config *Config, logConfig *logs.Config, initTable ...inter
 		sqlDB, _ := db.DB()
 		sqlDB.SetMaxIdleConns(config.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(config.MaxOpenConns)
+		db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 		initTables(db, initTable...)
 		return db
 	}
