@@ -18,9 +18,9 @@ func (id *ID) BeforeCreate(tx *gorm.DB) (err error) {
 // 创建、更新时间
 type Timestamps struct {
 	CreateAt time.Time `gorm:"not null;default:CURRENT_TIMESTAMP" json:"createAt"`
-	CreateBy int64     `json:"createBy"`
+	CreateBy uuid.UUID `json:"createBy"`
 	UpdateAt time.Time `json:"updateAt"`
-	UpdateBy int64     `json:"updateBy"`
+	UpdateBy uuid.UUID `json:"updateBy"`
 }
 
 // 软删除
