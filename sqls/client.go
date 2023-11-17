@@ -14,7 +14,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"reflect"
 	"strconv"
 	"time"
 )
@@ -113,7 +112,9 @@ func initPostgresGorm(config *Config, logConfig *logs.Config, initTable ...inter
 
 func initTables(db *gorm.DB, models ...interface{}) {
 	for _, model := range models {
-		tableName := reflect.TypeOf(model).Elem().Name()
+		stmt := &gorm.Statement{DB: db}
+		_ = stmt.Parse(model) // Parse the model to initialize the schema
+		tableName := stmt.Schema.Table
 		if !db.Migrator().HasTable(model) {
 			continue
 		}
