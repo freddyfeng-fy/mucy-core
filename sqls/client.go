@@ -105,6 +105,11 @@ func initPostgresGorm(config *Config, logConfig *logs.Config, initTable ...inter
 		sqlDB.SetMaxIdleConns(config.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(config.MaxOpenConns)
 		initTables(db, initTable...)
+		for _, model := range initTable {
+			if err := resetAutoIncrementToSafeValue(core.App.DB, getTableName(core.App.DB, model)); err != nil {
+				core.App.Log.Error("resetAutoIncrementToSafeValue", zap.Any("err:", err))
+			}
+		}
 		return db
 	}
 }
@@ -115,6 +120,27 @@ func initTables(db *gorm.DB, models ...interface{}) {
 		core.App.Log.Error("migrate table failed", zap.Any("err", err))
 		os.Exit(0)
 	}
+}
+
+func resetAutoIncrementToSafeValue(db *gorm.DB, tableName string) error {
+	var maxID int64
+	err := db.Table(tableName).Select("MAX(id)").Row().Scan(&maxID)
+	if err != nil {
+		return err
+	}
+	// 设置新的起始值，应该比当前最大值大一
+	newStart := maxID + 1
+	err = db.Exec(fmt.Sprintf("ALTER SEQUENCE %s_id_seq RESTART WITH %d;", tableName, newStart)).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func getTableName(db *gorm.DB, model interface{}) string {
+	stmt := &gorm.Statement{DB: db}
+	stmt.Parse(model)
+	return stmt.Schema.Table
 }
 
 // 自定义 gorm Writer
