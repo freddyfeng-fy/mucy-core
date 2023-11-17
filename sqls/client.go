@@ -104,14 +104,9 @@ func initPostgresGorm(config *Config, logConfig *logs.Config, initTable ...inter
 		sqlDB, _ := db.DB()
 		sqlDB.SetMaxIdleConns(config.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(config.MaxOpenConns)
-		initPlugin(db)
 		initTables(db, initTable...)
 		return db
 	}
-}
-
-func initPlugin(db *gorm.DB) {
-	db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 }
 
 func initTables(db *gorm.DB, models ...interface{}) {
