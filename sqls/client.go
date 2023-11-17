@@ -14,6 +14,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 	"time"
 )
@@ -104,17 +105,22 @@ func initPostgresGorm(config *Config, logConfig *logs.Config, initTable ...inter
 		sqlDB, _ := db.DB()
 		sqlDB.SetMaxIdleConns(config.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(config.MaxOpenConns)
+		// 检查并重置自增主键起始值
 		initTables(db, initTable...)
-		for _, model := range initTable {
-			if err := resetAutoIncrementToSafeValue(core.App.DB, getTableName(core.App.DB, model)); err != nil {
-				core.App.Log.Error("resetAutoIncrementToSafeValue", zap.Any("err:", err))
-			}
-		}
 		return db
 	}
 }
 
 func initTables(db *gorm.DB, models ...interface{}) {
+	for _, model := range models {
+		tableName := reflect.TypeOf(model).Elem().Name()
+		if !db.Migrator().HasTable(model) {
+			continue
+		}
+		if err := resetAutoIncrement(db, tableName); err != nil {
+			core.App.Log.Error("Failed to reset auto-increment value", zap.Error(err))
+		}
+	}
 	err := db.AutoMigrate(models...)
 	if err != nil {
 		core.App.Log.Error("migrate table failed", zap.Any("err", err))
@@ -122,25 +128,21 @@ func initTables(db *gorm.DB, models ...interface{}) {
 	}
 }
 
-func resetAutoIncrementToSafeValue(db *gorm.DB, tableName string) error {
-	var maxID int64
-	err := db.Table(tableName).Select("MAX(id)").Row().Scan(&maxID)
-	if err != nil {
+func resetAutoIncrement(db *gorm.DB, tableName string) error {
+	var maxID int
+	// 假设主键列名为 'id'
+	if err := db.Table(tableName).Select("max(id)").Row().Scan(&maxID); err != nil {
 		return err
 	}
-	// 设置新的起始值，应该比当前最大值大一
-	newStart := maxID + 1
-	err = db.Exec(fmt.Sprintf("ALTER SEQUENCE %s_id_seq RESTART WITH %d;", tableName, newStart)).Error
-	if err != nil {
-		return err
-	}
-	return nil
-}
 
-func getTableName(db *gorm.DB, model interface{}) string {
-	stmt := &gorm.Statement{DB: db}
-	stmt.Parse(model)
-	return stmt.Schema.Table
+	// 计算下一个安全的自增起始值
+	nextID := maxID + 1
+
+	// 构建序列名，通常是 '{tableName}_id_seq'
+	sequenceName := fmt.Sprintf("%s_id_seq", tableName)
+
+	// 重置序列值
+	return db.Exec(fmt.Sprintf("ALTER SEQUENCE %s RESTART WITH %d", sequenceName, nextID)).Error
 }
 
 // 自定义 gorm Writer
